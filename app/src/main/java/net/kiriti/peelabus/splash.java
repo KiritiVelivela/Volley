@@ -9,7 +9,7 @@ import android.view.Menu;
 public class splash extends AppCompatActivity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 10000;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +22,8 @@ public class splash extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(splash.this,Menu.class);
-
+                Intent mainIntent = new Intent(splash.this, LoginActivity.class);
+                startActivity(mainIntent);
                 splash.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);

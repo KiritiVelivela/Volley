@@ -96,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
             imageLoader = ImageRequest.getInstance(this.getApplicationContext())
                     .getImageLoader();
             imageLoader.get(path, ImageLoader.getImageListener(imageView,
-                    R.drawable.pilabuslogocopy, android.R.drawable
+                    R.drawable.logo, android.R.drawable
                             .ic_dialog_alert));
             imageView.setImageUrl(path, imageLoader);
 
@@ -155,14 +155,14 @@ public class ProfileActivity extends AppCompatActivity {
                 imageLoader = ImageRequest.getInstance(this.getApplicationContext())
                         .getImageLoader();
                 imageLoader.get(path, ImageLoader.getImageListener(imageView,
-                        R.drawable.pilabuslogocopy, android.R.drawable
+                        R.drawable.logo, android.R.drawable
                                 .ic_dialog_alert));
                 imageView.setImageUrl(path, imageLoader);
 
                 imageLoader = ImageRequest.getInstance(this.getApplicationContext())
                         .getImageLoader();
                 imageLoader.get(path1, ImageLoader.getImageListener(imageView1,
-                        R.drawable.pilabuslogocopy, android.R.drawable
+                        R.drawable.logo, android.R.drawable
                                 .ic_dialog_alert));
                 imageView1.setImageUrl(path1, imageLoader);
 

@@ -3,6 +3,7 @@ package net.kiriti.peelabus;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -37,6 +38,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
 
         //Initializing views
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
@@ -60,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //If we will get true
         if(loggedIn){
             //We will start the Profile Activity
-            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
     }
@@ -144,7 +147,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        //Calling the login function
+
+//        final String email = editTextEmail.getText().toString();
+//        if (!isValidEmail(email)) {
+//            editTextEmail.setError("Invalid Email");
+//        }
+//
+//        final String pass = editTextPassword.getText().toString();
+//        if (!isValidPassword(pass)) {
+//            editTextPassword.setError("Invalid Password");
+//        }
+
+//        if (isValidEmail(email) && isValidPassword(pass)) {
+//            //Calling the login function
+//            login();
+//        }
+
         login();
     }
+
+    // validating email id
+//    private boolean isValidEmail(String email) {
+//        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+//                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+//
+//        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+//        Matcher matcher = pattern.matcher(email);
+//        return matcher.matches();
+//    }
+//
+//    // validating password with retype password
+//    private boolean isValidPassword(String pass) {
+//        if (pass != null && pass.length() > 6) {
+//            return true;
+//        }
+//        return false;
+//    }
 }
