@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.kiriti.peelabus.Attendance">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp"
+        android:background="@drawable/loginlayout"
+        android:id="@+id/linearLayout4">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/changepassword_bg"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#3673CA"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="20dp">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name of Student"
+                style="@style/attendancechilddets"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Class - Vth,Section - A"
+                style="@style/attendancechilddets"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="School Bus No: 1"
+                style="@style/attendancechilddets"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView3"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--app:srcCompat="@drawable/changepassword_bg"-->
+            <!--android:background="@drawable/circleimg"-->
+            <!--android:layout_margin="10dp"-->
+            <!--/>-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/loginlayout">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:text="Today's Attendance"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:background="#3673CA"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#e5e5e5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Morning Session:"
+                android:layout_weight="0.28"
+                android:textColor="#000000"/>
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:text="2/2"
+                    android:layout_marginRight="20dp"
+                    android:textAlignment="center"
+                    android:textColor="#3673CA"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="#39B54A"
+                    android:layout_gravity="end" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Afternoon Session:"
+                    android:layout_weight="0.26"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:id="@+id/textView36"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:text="1/2"
+                    android:layout_marginRight="20dp"
+                    android:textAlignment="center"
+                    android:textColor="#3673CA"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="#FFAD00"
+                    android:layout_gravity="end" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Evening Session:"
+                    android:layout_weight="0.26"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_marginRight="20dp"
+                    android:textAlignment="center"
+                    android:textColor="#3673CA"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="#ED1C24"
+                    android:layout_gravity="end" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:text="Past Attendance"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:background="#F5C910"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/button"
+            style="@style/pastattendance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Download the link below for Total Student Attendance"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

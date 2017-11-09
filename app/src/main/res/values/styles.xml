@@ -31,6 +31,25 @@
         <item name="android:left">1383.539px</item>
         <item name="android:top">1120.3px</item>
     </style>
+
+    <style name="attendancechilddets" >
+        <item name="android:textSize">15dp</item>
+        <item name="android:fontFamily">Roboto</item>
+        <item name="android:textColor">#888888</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:left">1383.539px</item>
+        <item name="android:top">1120.3px</item>
+    </style>
+
+    <style name="formlabelchange" >
+        <item name="android:textSize">20dp</item>
+        <item name="android:fontFamily">Roboto</item>
+        <item name="android:textColor">#888888</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:left">1383.539px</item>
+        <item name="android:top">1120.3px</item>
+    </style>
     
     <style name="field">
         <item name="android:background">#aaaaaa</item>
@@ -64,6 +83,16 @@
 
     <style name="forgotpassword">
         <item name="android:textSize">21px</item>
+        <item name="android:fontFamily">Roboto</item>
+        <item name="android:textColor">#3468b3</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:left">1621.52px</item>
+        <item name="android:top">1691.467px</item>
+    </style>
+
+    <style name="pastattendance">
+        <item name="android:textSize">10dp</item>
         <item name="android:fontFamily">Roboto</item>
         <item name="android:textColor">#3468b3</item>
         <item name="android:lineSpacingMultiplier">1.2</item>
