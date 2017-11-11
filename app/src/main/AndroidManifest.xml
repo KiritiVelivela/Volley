@@ -42,7 +42,8 @@
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Attendance" />
-        <activity android:name=".Alerts"></activity>
+        <activity android:name=".Alerts" />
+        <activity android:name=".Track"></activity>
     </application>
 
 </manifest>

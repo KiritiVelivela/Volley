@@ -5,7 +5,7 @@ public class Config {
     //URL to our login.php file
     public static final String LOGIN_URL = "http://admin.peelabus.com/webservices/parentlogin.asmx/ParentLogin";
 
-    public static final String CHANGE_PASSWORD_URL = "http://admin.peelabus.com/Webservices/ChangePassword.asmx?op=changepassword";
+    public static final String CHANGE_PASSWORD_URL = "http://admin.peelabus.com/Webservices/ChangePassword.asmx/changepassword";
     //Keys for email and password as defined in our $_POST['key'] in login.php
     public static final String KEY_EMAIL = "username";
     public static final String KEY_PASSWORD = "password";

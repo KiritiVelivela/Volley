@@ -157,17 +157,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_track) {
-            // Handle the camera action
+            Intent intent = new Intent(MainActivity.this, Track.class);
+            startActivity(intent);
         } else if (id == R.id.nav_alerts) {
-
+            Intent intent = new Intent(MainActivity.this, Alerts.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profiles) {
-
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_logout) {
-
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -179,9 +182,11 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.track1) {
-
+            Intent intent = new Intent(MainActivity.this, Track.class);
+            startActivity(intent);
         } else if (id == R.id.alerts1) {
-
+            Intent intent = new Intent(MainActivity.this, Alerts.class);
+            startActivity(intent);
         } else if (id == R.id.profile1) {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
@@ -192,8 +197,7 @@ public class MainActivity extends AppCompatActivity
 //            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
 //            startActivity(intent);
         } else if (id == R.id.logout1) {
-//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//            startActivity(intent);
+                logout();
         }
 
     }

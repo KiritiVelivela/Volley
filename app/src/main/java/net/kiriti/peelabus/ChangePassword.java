@@ -41,10 +41,11 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        usern = (EditText) findViewById(R.id.user);
         current = (EditText) findViewById(R.id.current);
         newpass = (EditText) findViewById(R.id.newpass);
         confirmpass = (EditText) findViewById(R.id.confirmnew);
-         usern = (EditText) findViewById(R.id.user);
+
 
         confirm = (Button) findViewById(R.id.confirm);
         confirm.setOnClickListener(this);
@@ -61,7 +62,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         final String txtUser = usern.getText().toString().trim();
         final String txtCurrPass = current.getText().toString().trim();
         final String txtNewPass = newpass.getText().toString().trim();
-        final String txtConfirmNewPass = newpass.getText().toString().trim();
+        final String txtConfirmNewPass = confirmpass.getText().toString().trim();
 
         Log.i("hey", "hey: " + txtCurrPass);
         Log.i("hey", "hey: " + txtNewPass);
@@ -111,7 +112,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
                 //Adding parameters to request
-//                params.put("Content-Type", "application/json");
+//                params.put("Content-Type", "application/x-www-form-urlencoded");
                 params.put(Config.USER, txtUser);
                 params.put(Config.CURRENT, txtCurrPass);
                 params.put(Config.EMAIL_SHARED_PREF, txtNewPass);
@@ -122,16 +123,6 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                 return params;
             }
 
-//                        public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String,String> params = new HashMap< String, String>();
-//                //Adding parameters to request
-//                params.put("Content-Type", "application/json");
-////                params.put(Config.KEY_EMAIL, email);
-////                params.put(Config.KEY_PASSWORD, password);
-//                Log.i("check", "check: " );
-//                //returning parameter
-//                return params;
-//            }
         };
 
         //Adding the string request to the queue
