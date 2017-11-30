@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="net.kiriti.peelabus.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/main_bg_header"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout2"
+        android:weightSum="1"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/imageparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/parents_icon"
+            />
+
+        <TextView
+            android:id="@+id/parentname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MARKUS schulz"
+            android:layout_gravity="center"
+            android:textAllCaps="true"
+            android:layout_marginTop="4dp"
+            style="@style/parentname"/>
+
+        <TextView
+            android:id="@+id/parentlocation"
+            style="@style/parentlocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/location_icon"
+            android:drawablePadding="5dp"
+            android:maxLines="1"
+            android:layout_marginTop="4dp"
+            android:text="Vishakhapatnam"
+            android:layout_gravity="center"
+            android:textAllCaps="true" />
+
+    </LinearLayout>
+
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/imageView4">
+
+    <ImageButton
+        android:id="@+id/track1"
+        android:layout_width="157dp"
+        android:layout_height="116dp"
+        app:srcCompat="@drawable/menu_track_bus"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_gravity="fill"
+        style="@style/mainbutton"
+        android:background="@drawable/mainbutton" />
+
+    <TextView
+        android:id="@+id/track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:layout_column="0"
+        android:layout_row="0"
+        style="@style/mainbuttontext"
+        android:text="Track My Bus"
+        android:layout_gravity="center"
+        />
+
+
+
+    <ImageButton
+        android:id="@+id/alerts1"
+        android:layout_width="131dp"
+        android:layout_height="107dp"
+        app:srcCompat="@drawable/menu_alerts"
+        style="@style/mainbutton"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:background="@drawable/mainbutton"
+         />
+
+    <TextView
+        android:id="@+id/alerts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        style="@style/mainbuttontext"
+        android:text="Alerts"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:layout_gravity="center"/>
+
+    <ImageButton
+        android:id="@+id/profile1"
+        android:layout_width="135dp"
+        android:layout_height="109dp"
+        android:layout_column="0"
+        android:layout_row="1"
+        app:srcCompat="@drawable/menu_profiles"
+        style="@style/mainbutton"
+        android:background="@drawable/mainbutton"/>
+
+    <TextView
+        android:id="@+id/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        style="@style/mainbuttontext"
+        android:text="Profiles"
+        android:layout_column="0"
+        android:layout_row="1"
+        android:layout_gravity="center"/>
+
+    <ImageButton
+        android:id="@+id/share1"
+        android:layout_width="135dp"
+        android:layout_height="109dp"
+        app:srcCompat="@drawable/menu_shareit"
+        style="@style/mainbutton"
+        android:background="@drawable/mainbutton"
+        android:layout_column="1"
+        android:layout_row="1" />
+
+    <TextView
+        android:id="@+id/share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        style="@style/mainbuttontext"
+        android:text="Shareit"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:layout_gravity="center"/>
+
+    <ImageButton
+        android:id="@+id/help1"
+        android:layout_width="135dp"
+        android:layout_height="109dp"
+        app:srcCompat="@drawable/menu_help_feedback"
+        style="@style/mainbutton"
+        android:background="@drawable/mainbutton"
+        android:layout_column="0"
+        android:layout_row="2"/>
+
+    <TextView
+        android:id="@+id/help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        style="@style/mainbuttontext"
+        android:text="help &amp; Feedback"
+        android:layout_column="0"
+        android:layout_row="2"
+        android:layout_gravity="center"
+        />
+
+    <ImageButton
+        android:id="@+id/logout1"
+        android:layout_width="135dp"
+        android:layout_height="109dp"
+        android:layout_column="1"
+        android:layout_row="2"
+        app:srcCompat="@drawable/menu_logout"
+        style="@style/mainbutton"
+        android:background="@drawable/mainbutton"/>
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        style="@style/mainbuttontext"
+        android:layout_column="1"
+        android:layout_row="2"
+        android:text="Logout"
+        android:layout_gravity="center"/>
+
+    </GridLayout>
+
+</RelativeLayout>

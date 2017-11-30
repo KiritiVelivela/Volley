@@ -16,7 +16,7 @@ public class Config {
     public static final String CONFIRM_NEW = "txtConfirmNewPass";
 
     //If server response is equal to this that means login is successful
-    public static final String LOGIN_SUCCESS = "";
+    public static final String LOGIN_SUCCESS = "[]";
 
     public static final String RESPONSE = "";
 

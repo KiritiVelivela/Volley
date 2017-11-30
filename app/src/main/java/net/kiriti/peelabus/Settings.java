@@ -17,6 +17,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         notif = (Button) findViewById(R.id.notificationset);
         pass = (Button) findViewById(R.id.change);
@@ -24,15 +25,15 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         notif.setOnClickListener(this);
         pass.setOnClickListener(this);
 
-
-
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.notif) {
-            Log.i("hey notif", "notif===");
+        if (id == R.id.notificationset) {
+            Intent intent = new Intent(this, Settings.class);
+            Log.i("inside","inside=====");
+            startActivity(intent);
         } else if (id == R.id.change) {
             Intent intent = new Intent(this, ChangePassword.class);
             startActivity(intent);

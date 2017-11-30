@@ -1,14 +1,24 @@
 package net.kiriti.peelabus;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,50 +28,115 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ImageButton track;
-    private ImageButton alerts;
-    private ImageButton profiles;
-    private ImageButton shareit;
-    private ImageButton help;
-    private ImageButton logout;
+    GridView simpleGrid;
+    TextView parentName;
+    TextView drawerName;
+
+    private String urlJsonObj = "https://stormy-meadow-56569.herokuapp.com";
+    private Timer timer = new Timer();
+    private static String TAG = MainActivity.class.getSimpleName();
+    Boolean inside;
+    String position;
+
+    int logos[] = {R.drawable.menu_track_bus, R.drawable.menu_alerts, R.drawable.menu_profiles, R.drawable.menu_shareit,
+            R.drawable.menu_help_feedback, R.drawable.menu_logout};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        track = (ImageButton) findViewById(R.id.track1);
-        alerts = (ImageButton) findViewById(R.id.alerts1);
-        profiles = (ImageButton) findViewById(R.id.profile1);
-        shareit = (ImageButton) findViewById(R.id.share1);
-        help = (ImageButton) findViewById(R.id.help1);
-        logout = (ImageButton) findViewById(R.id.logout1);
+        parentName = (TextView) findViewById(R.id.parentname);
 
-        track.setOnClickListener(this);
-        alerts.setOnClickListener(this);
-        profiles.setOnClickListener(this);
-        shareit.setOnClickListener(this);
-        help.setOnClickListener(this);
-        logout.setOnClickListener(this);
+        geofence();
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        Log.i("name","name==" + email);
+        parentName.setText(email);
+
+
+        simpleGrid = (GridView) findViewById(R.id.gridview); // init GridView
+        // Create an object of CustomAdapter and set Adapter to GirdView
+        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), logos);
+        simpleGrid.setAdapter(customAdapter);
+        // implement setOnItemClickListener event on GridView
+        simpleGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // set an Intent to Another Activity
+                int idi = view.getId();
+                Log.i("itemid","itemid == " + position);
+                Log.i("itemidi","itemidi == " + idi);
+                if (position == 0) {
+                    Intent intent = new Intent(MainActivity.this, Track.class);
+                    startActivity(intent);
+                } else if (position == 1) {
+                    Intent intent = new Intent(MainActivity.this, Alerts.class);
+                    startActivity(intent);
+                } else if (position == 2) {
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                } else if (position == 3) {
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    String check = "Heyyy";
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,check);
+                    Intent.createChooser(sendIntent,"Link here");
+                    startActivity(Intent.createChooser(sendIntent,"Share using"));
+                } else if (position == 4) {
+//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+//            startActivity(intent);
+                } else if (position == 5) {
+                    logout();
+                }
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        drawerName = (TextView) headerView.findViewById(R.id.drawer_parentName);
+        drawerName.setText(email);
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -84,6 +159,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
+                        timer.cancel();
                         //Getting out sharedpreferences
                         SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                         //Getting editor
@@ -98,7 +174,7 @@ public class MainActivity extends AppCompatActivity
                         //Saving the sharedpreferences
                         editor.commit();
 
-                        //Starting login activity
+                        //Starting activity
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
@@ -119,6 +195,79 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private void geofence() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+
+
+                JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                        urlJsonObj, null, new Response.Listener<JSONObject>() {
+
+                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                        try {
+
+                            boolean insideLocal = response.getBoolean("insideradius");
+//                            JSONObject obj = response.getJSONObject("insideradius");
+                            inside = insideLocal;
+                            Log.i("jsonarr", "jsonarr=" + inside);
+                            String positionLocal = response.getString("enterorexit");
+                            position = positionLocal;
+                            Log.i("position","position==" + position);
+                            // Parsing json object response
+                            // response will be a json object
+                            if (inside == true) {
+//                                showNotification();
+                                Log.i("notif","notif");
+                                Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                Intent intent = new Intent(MainActivity.this, Track.class);
+                                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+
+                                Notification notification = new Notification.Builder(MainActivity.this)
+                                        .setSound(soundUri)
+                                        .setContentIntent(pendingIntent)
+                                        .setSmallIcon(R.drawable.menu_alerts)
+                                        .setOnlyAlertOnce(true)
+                                        .setColor(getResources().getColor(R.color.colorPrimary))
+                                        .setPriority(Notification.PRIORITY_HIGH)
+                                        .setContentTitle("Alert!!!")
+                                        .setContentText(position+", Bus has reached the School")
+                                        .addAction(R.drawable.menu_alerts, "Open", pendingIntent)
+                                        .setAutoCancel(true)
+                                        .addAction(0, "Remind", pendingIntent).build();
+
+                                NotificationManager notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                notifManager.notify(0, notification);
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                    "Error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext(),
+                                error.getMessage(), Toast.LENGTH_SHORT).show();
+                        // hide the progress dialog
+                    }
+                });
+                // Adding request to request queue
+                AppController.getInstance().addToRequestQueue(jsonObjReq);
+            }
+        }, 0, 10 * 1000);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -166,7 +315,12 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.setType("text/plain");
+            String check = "Heyyy";
+            sendIntent.putExtra(Intent.EXTRA_TEXT,check);
+            Intent.createChooser(sendIntent,"Share via");
+            startActivity(Intent.createChooser(sendIntent,"Share using"));
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_logout) {
@@ -178,28 +332,21 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.track1) {
-            Intent intent = new Intent(MainActivity.this, Track.class);
-            startActivity(intent);
-        } else if (id == R.id.alerts1) {
-            Intent intent = new Intent(MainActivity.this, Alerts.class);
-            startActivity(intent);
-        } else if (id == R.id.profile1) {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.share1) {
-//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//            startActivity(intent);
-        } else if (id == R.id.help1) {
-//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//            startActivity(intent);
-        } else if (id == R.id.logout1) {
-                logout();
-        }
+    public void showNotification() {
+        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, Track.class), 0);
+        Resources r = getResources();
+        Log.i("inside notif","inside notif");
+        Notification notification = new NotificationCompat.Builder(this)
+                .setTicker("PeelaBus")
+                .setSmallIcon(android.R.drawable.ic_menu_report_image)
+                .setContentTitle("Bus Position")
+                .setContentText("Bus has reached the School")
+                .setContentIntent(pi)
+                .setAutoCancel(true)
+                .build();
 
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
     }
 
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -47,7 +48,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         confirmpass = (EditText) findViewById(R.id.confirmnew);
 
 
-        confirm = (Button) findViewById(R.id.confirm);
+        confirm = (AppCompatButton) findViewById(R.id.confirm);
         confirm.setOnClickListener(this);
 
     }
@@ -86,8 +87,8 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                             //Adding values to editor
                             editor.putString(Config.USER, txtUser);
                             editor.putString(Config.CURRENT, txtCurrPass);
-                            editor.putString(Config.EMAIL_SHARED_PREF, txtNewPass);
-                            editor.putString(Config.RESPONSE, txtConfirmNewPass);
+                            editor.putString(Config.NEW_PASSWORD, txtNewPass);
+                            editor.putString(Config.CONFIRM_NEW, txtConfirmNewPass);
 
                             //Saving values to editor
                             editor.commit();
@@ -115,9 +116,9 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 //                params.put("Content-Type", "application/x-www-form-urlencoded");
                 params.put(Config.USER, txtUser);
                 params.put(Config.CURRENT, txtCurrPass);
-                params.put(Config.EMAIL_SHARED_PREF, txtNewPass);
-                params.put(Config.RESPONSE, txtConfirmNewPass);
-                Log.i("par","par==" + params.put(Config.RESPONSE, txtConfirmNewPass));
+                params.put(Config.NEW_PASSWORD, txtNewPass);
+                params.put(Config.CONFIRM_NEW, txtConfirmNewPass);
+                Log.i("par","par==" + params.put(Config.CONFIRM_NEW, txtConfirmNewPass));
 
                 //returning parameter
                 return params;

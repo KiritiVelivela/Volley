@@ -20,8 +20,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -83,26 +89,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResponse(String response) {
                         Log.i("resp1", "resp1: " + response);
                         //If we are getting success from server
-                        if(!response.equalsIgnoreCase(Config.LOGIN_SUCCESS)){
-                            //Creating a shared preference
-                            Log.i("resp", "resp: " + response);
-                            SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("jsonObj", "jsonObj:" + jsonObject);
+                        JSONArray result = null;
+                        try {
+                            result = jsonObject.getJSONArray("Result");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("jsonarray","jsonarray:" + result);
+                        if (result != null && result.length()>0) {
+                            if (!response.equalsIgnoreCase(Config.LOGIN_SUCCESS)) {
+                                //Creating a shared preference
+                                Log.i("resp", "resp: " + response);
+                                SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-                            //Creating editor to store values to shared preferences
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                //Creating editor to store values to shared preferences
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                            //Adding values to editor
-                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                            editor.putString(Config.EMAIL_SHARED_PREF, email);
-                            editor.putString(Config.RESPONSE, response);
+                                //Adding values to editor
+                                editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                                editor.putString(Config.EMAIL_SHARED_PREF, email);
+                                editor.putString(Config.RESPONSE, response);
 
-                            //Saving values to editor
-                            editor.commit();
+                                //Saving values to editor
+                                editor.commit();
 
-                            //Starting profile activity
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }else{
+                                //Starting profile activity
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                    }else{
                             //If the server response is not success
                             //Displaying an error message on toast
                             Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_LONG).show();
@@ -148,39 +170,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-//        final String email = editTextEmail.getText().toString();
-//        if (!isValidEmail(email)) {
-//            editTextEmail.setError("Invalid Email");
-//        }
-//
-//        final String pass = editTextPassword.getText().toString();
-//        if (!isValidPassword(pass)) {
-//            editTextPassword.setError("Invalid Password");
-//        }
+        final String email = editTextEmail.getText().toString();
+        Log.i("email","email==" + email);
+        if ( !isValidMobile(email) ) {
+            editTextEmail.setError("Invalid Email or Mobile Number");
+        }
 
-//        if (isValidEmail(email) && isValidPassword(pass)) {
-//            //Calling the login function
-//            login();
-//        }
+        final String pass = editTextPassword.getText().toString();
+        if (!isValidPassword(pass)) {
+            editTextPassword.setError("Invalid Password");
+        }
 
-        login();
+        if ( isValidMobile(email) && isValidPassword(pass)   ) {
+            //Calling the login function
+            login();
+        }
+
+//        login();
     }
 
-    // validating email id
-//    private boolean isValidEmail(String email) {
-//        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-//                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-//
-//        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-//        Matcher matcher = pattern.matcher(email);
-//        return matcher.matches();
-//    }
-//
-//    // validating password with retype password
-//    private boolean isValidPassword(String pass) {
-//        if (pass != null && pass.length() > 6) {
-//            return true;
-//        }
-//        return false;
-//    }
+    private boolean isValidMobile(String email) {
+        if(email.length() != 10) {
+            return false;
+        } else {
+            return true;
+        }
+        }
+
+    //     validating email id
+    private boolean isValidEmail(String email) {
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // validating password with retype password
+    private boolean isValidPassword(String pass) {
+        if (pass != null && pass.length() >= 6) {
+            return true;
+        }
+        return false;
+    }
+
+
 }
