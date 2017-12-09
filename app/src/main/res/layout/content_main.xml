@@ -8,29 +8,30 @@
     tools:context="net.kiriti.peelabus.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/main_bg_header"
-        android:scaleType="fitXY" />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView4"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="180dp"-->
+        <!--app:srcCompat="@drawable/main_bg_header"-->
+        <!--android:scaleType="fitXY" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:orientation="vertical"
         android:id="@+id/linearLayout2"
         android:weightSum="1"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/main_bg_header">
 
         <ImageView
             android:id="@+id/imageparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/parents_icon"
+            app:srcCompat="@mipmap/parentimage"
             />
 
         <TextView
@@ -65,13 +66,11 @@
         android:layout_height="wrap_content"
         android:columnWidth="90dp"
         android:numColumns="2"
-        android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
-        android:layout_margin="20dp"
+        android:layout_margin="5dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:layout_below="@+id/imageView4"
-        android:listSelector="@color/colorText"/>
+        android:layout_below="@+id/linearLayout2"
+        android:listSelector="@color/mainbutton"/>
 
 
     <!--<GridLayout-->

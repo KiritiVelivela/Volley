@@ -11,7 +11,7 @@
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="always" />
-    <item android:id="@+id/menuLogout"
-          android:title="Logout"
-        app:showAsAction="always"/>
+    <!--<item android:id="@+id/menuLogout"-->
+          <!--android:title="Logout"-->
+        <!--app:showAsAction="always"/>-->
 </menu>

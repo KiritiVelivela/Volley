@@ -15,9 +15,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/parents_icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@mipmap/parentimage"
+        android:layout_gravity="center"
         android:paddingTop="30dp"/>
 
     <TextView
@@ -38,6 +39,7 @@
         android:textAllCaps="true"
         android:layout_gravity="center"
         android:drawableLeft="@drawable/location_icon"
+        android:drawableStart="@drawable/location_icon"
         android:drawablePadding="5dp"/>
 
 </LinearLayout>

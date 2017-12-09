@@ -62,7 +62,7 @@
                 style="@style/formlabel"
                 android:layout_width="262dp"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="Email or Mobile Number"
                 android:inputType="textEmailAddress" />
 
         </android.support.design.widget.TextInputLayout>

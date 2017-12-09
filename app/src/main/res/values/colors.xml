@@ -8,4 +8,21 @@
     <color name="white">#ffffff</color>
     <color name="loginbutt">#febc10</color>
 
+    <color name="fab_material_blue_500">#2196f3</color>
+    <color name="Background">#408D42</color>
+
+    <color name="mainbutton">#dfe2e8</color>
+
+    <color name="Background.CardView">#DDDDDD</color>
+
+    <color name="TextColor.White">#FFFFFF</color>
+    <color name="TextColor.Gray">#999999</color>
+    <color name="TextColor.DarkGray">#333333</color>
+    <color name="TextColor.Black">#000000</color>
+
+    <color name="Divider">#333333</color>
+
+    <color name="ColorAccent1">#CCCCCC</color>
+    <color name="fab_material_grey_500">#9e9e9e</color>
+
 </resources>

@@ -1,8 +1,14 @@
 package net.kiriti.peelabus;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,14 +16,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,6 +47,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,8 +55,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static net.kiriti.peelabus.R.id.imageView;
 
 
 public class Track extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -61,6 +81,15 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
     private Double lat;
     private Double lon;
     private Double speed;
+    public String busid;
+    private String contactd;
+    private CircleImageView profile;
+    private TextView driver;
+    private TextView driverdetails;
+    private Button callDriver;
+
+    Geocoder geocoder;
+    List<Address> addresses;
 
 
     // temporary string to show the parsed response
@@ -83,6 +112,21 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //            textLat = (TextView) findViewById(R.id.lat);
 //            textLong = (TextView) findViewById(R.id.lon);
+            profile = (CircleImageView) findViewById(R.id.profile_driver);
+            driver = (TextView) findViewById(R.id.Driver);
+            driverdetails = (TextView) findViewById(R.id.Driverdetails);
+            callDriver = (Button) findViewById(R.id.call);
+            callDriver.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(contactd != null) {
+                        String dial = "tel:" +"0"+contactd;
+                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                    }else {
+                        Toast.makeText(Track.this, "Cannot Dial Right Now", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             initMap();
 
             // create GoogleApiClient
@@ -191,27 +235,7 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 
     // Get last known location
 
-    private void getLastKnownLocation() {
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//
-//            @Override
-//            public void run() {
-        Log.d(TAG, "getLastKnownLocation()");
-//            lastLocation = lat + lon;
-        if (lat != null && lon != null) {
-            Log.i(TAG, "LasKnown location. " +
-                    "Long: " + lon +
-                    " | Lat: " + lat);
-            writeLastLocation();
-//            startLocationUpdates();
-        } else {
-            Log.w(TAG, "No location retrieved yet");
-//            startLocationUpdates();
-        }
-//            }
-//        }, 0, 20 * 1000);
 
-    }
 
     // Start location Updates
 //    private void startLocationUpdates(){
@@ -222,8 +246,8 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 
     private void writeActualLocation(Location location) {
         Log.i("actual", "Actuallll====");
-        textLat.setText("Lat: " + lat);
-        textLong.setText("Long: " + lon);
+        textLat.setText("Lat: ");
+        textLong.setText("Long: ");
 
         markerLocation(new LatLng(lat, lon));
     }
@@ -271,22 +295,38 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 
 //        EditText et = (EditText) findViewById(R.id.editText);
 //        String location = et.getText().toString();
-//
+
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        Log.i("address","address=="+address);
+        Log.i("city","city=="+city);
+        String state = addresses.get(0).getAdminArea();
+        Log.i("state","state==="+state);
+        String country = addresses.get(0).getCountryName();
+        Log.i("country","country=="+country);
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName();
+        Log.i("knownname","knownname==="+knownName);
+
 //        Geocoder gc = new Geocoder(this);
 //        List<Address> list = gc.getFromLocationName(location, 1);
 //        Address address = list.get(0);
 //        String locality = address.getLocality();
-        makeJsonObjectRequest();
-
-//        String locality = "It me";
-//        Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
-
-        double latt = lat;
-        double lng = lon;
-        goToLocationZoom(latt, lng, 15);
-        Log.i("geo", "geo = " + latt + " " + lng);
-
-        setMarker("hey", latt, lng);
+//        makeJsonObjectRequest();
+//
+////        String locality = "It me";
+////        Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+//
+//        double latt = lat;
+//        double lng = lon;
+//        goToLocationZoom(latt, lng, 15);
+//        Log.i("geo", "geo = " + latt + " " + lng);
+//
+//        setMarker("hey", latt, lng);
 
     }
 
@@ -327,15 +367,22 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
                             lon = lonn;
                             Double speedd = obj.getDouble("speed");
                             speed = speedd;
+                            String buss = obj.getString("Busid");
+                            busid = buss;
                             String locality = "Speed: " + String.valueOf(speedd);
+
                             goToLocationZoom(latt, lonn, 16);
                             setMarker(locality, latt, lonn);
-
+                            driverDetails();
                             jsonResponse = "";
                             jsonResponse += "Name: " + lat + "\n\n";
                             jsonResponse += "Email: " + lon + "\n\n";
                             jsonResponse += "Home: " + speed + "\n\n";
-
+                            try {
+                                geoLocate();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -358,6 +405,95 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
                 AppController.getInstance().addToRequestQueue(jsonObjReq);
             }
         }, 0, 10 * 1000);
+    }
+
+    private void driverDetails() {
+        Log.i("inside DRiver","inside DRiver");
+        //Creating a string request
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.DRIVER_URL,
+
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("Diver", "Driver " + response);
+                        //If we are getting success from server
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("jsonObj", "jsonObj:" + jsonObject);
+                        JSONArray result = null;
+                        try {
+                            result = jsonObject.getJSONArray("Result");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("jsonarray","jsonarray:" + result);
+                        if (result != null && result.length()>0) {
+                            if (!response.equalsIgnoreCase(Config.LOGIN_SUCCESS)) {
+                                //Creating a shared preference
+                                Log.i("resultDriver", "resultDriver " + result);
+                                JSONObject obj = null;
+                                try {
+                                    obj = result.getJSONObject(0);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i("jsonarr", "jsonarr=" + obj);
+                                // Parsing json object response
+                                // response will be a json object
+                                try {
+                                    String drivername = obj.getString("drivername");
+                                    Log.i("drivenm","drivernm=="+drivername);
+                                    driver.setText("DRIVER NAME: "+drivername);
+                                    String drivrdet = obj.getString("busno");
+                                    String route = obj.getString("Busid");
+                                    driverdetails.setText("Bus No: "+drivrdet+"\n"+"Route Id: "+route);
+                                    String img = "http://admin.peelabus.com/"+obj.getString("imagepath");
+                                    Picasso.with(getApplicationContext()).load(img)
+                                            .placeholder(R.drawable.splash_bg).error(R.drawable.changepassword_bg)
+                                            .into(profile);
+                                    Log.i("driveimage","driverimage=="+img);
+                                    String contact = obj.getString("mobileno");
+                                    contactd = contact;
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }else{
+                            //If the server response is not success
+                            //Displaying an error message on toast
+                            Toast.makeText(Track.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                //Adding parameters to request
+//                params.put("Content-Type", "application/json");
+                params.put(Config.busid, busid);
+//                params.put(Config.KEY_PASSWORD, password);
+
+                //returning parameter
+                return params;
+            }
+        };
+
+        //Adding the string request to the queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        Log.i("req", "req" + requestQueue);
+
     }
 
     private void setMarker(String locality, double lat, double lng) {
@@ -389,32 +525,32 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
             markers.add(map.addMarker(options));
 
         }
-        if(markers.size() == POLYGON_POINTS){
-            drawPolygon();
-        }
+//        if(markers.size() == POLYGON_POINTS){
+//            drawPolygon();
+//        }
 
     }
 
-    private void drawPolygon() {
-        PolygonOptions options = new PolygonOptions()
-                .fillColor(0x330000FF)
-                .strokeWidth(3)
-                .strokeColor(Color.RED);
-
-        for(int i=0; i<POLYGON_POINTS;i++){
-            options.add(markers.get(i).getPosition());
-        }
-        shape = map.addPolygon(options);
-
-    }
+//    private void drawPolygon() {
+//        PolygonOptions options = new PolygonOptions()
+//                .fillColor(0x330000FF)
+//                .strokeWidth(3)
+//                .strokeColor(Color.RED);
+//
+//        for(int i=0; i<POLYGON_POINTS;i++){
+//            options.add(markers.get(i).getPosition());
+//        }
+//        shape = map.addPolygon(options);
+//
+//    }
 
     private void removeEverything() {
         for(Marker marker : markers) {
             marker.remove();
         }
         markers.clear();
-        shape.remove();
-        shape = null;
+//        shape.remove();
+//        shape = null;
 
     }
 
@@ -441,7 +577,7 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
     public void onConnected(Bundle bundle) {
 
         Log.i(TAG, "onConnected()");
-        getLastKnownLocation();
+//        getLastKnownLocation();
 //        mLocationRequest = LocationRequest.create();
 //        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 //        mLocationRequest.setInterval(10000);

@@ -31,8 +31,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.notificationset) {
-            Intent intent = new Intent(this, Settings.class);
-            Log.i("inside","inside=====");
+            Intent intent = new Intent(this, NotificationSettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.change) {
             Intent intent = new Intent(this, ChangePassword.class);

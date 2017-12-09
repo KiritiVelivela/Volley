@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,8 +46,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,16 +59,18 @@ public class MainActivity extends AppCompatActivity
     TextView parentName;
     TextView drawerName;
 
-    private String urlJsonObj = "https://stormy-meadow-56569.herokuapp.com";
+    private String urlJsonObj = "https://geofence-peelabus.herokuapp.com";
     private Timer timer = new Timer();
     private static String TAG = MainActivity.class.getSimpleName();
     Boolean inside;
     String position;
+    ArrayList birdList=new ArrayList<>();
 
-    int logos[] = {R.drawable.menu_track_bus, R.drawable.menu_alerts, R.drawable.menu_profiles, R.drawable.menu_shareit,
-            R.drawable.menu_help_feedback, R.drawable.menu_logout};
+//    int logos[] = {R.mipmap.menu_track_bus, R.mipmap.menu_alerts, R.mipmap.menu_profiles, R.mipmap.menu_shareit,
+//            R.mipmap.menu_help_feedback, R.mipmap.menu_logout};
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +84,40 @@ public class MainActivity extends AppCompatActivity
         Log.i("name","name==" + email);
         parentName.setText(email);
 
+        String resp = sharedPreferences.getString(Config.RESPONSE, "Not");
+        Log.i("respoo", "ressss: " + resp);
 
-        simpleGrid = (GridView) findViewById(R.id.gridview); // init GridView
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(resp);
+            Log.i("jsonObj", "jsonObj:" + jsonObject);
+            JSONArray result = null;
+            result = jsonObject.getJSONArray("Result");
+            Log.i("jsonarray","jsonarray:" + result);
+            JSONObject parentobject = null;
+            parentobject = new JSONObject(result.getString(0));
+            Log.i("name","name: " + parentobject);
+            String pickuppoint = parentobject.getString("pickuppoint");
+            Log.i("pickup","pickup=="+pickuppoint);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        simpleGrid = (GridView) findViewById(R.id.gridview);
+        birdList.add(new Item("Track My Bus",R.mipmap.menu_track_bus));
+        birdList.add(new Item("Alerts",R.mipmap.menu_alerts));
+        birdList.add(new Item("Profile",R.mipmap.menu_profiles));
+        birdList.add(new Item("Share",R.mipmap.menu_shareit));
+        birdList.add(new Item("Help",R.mipmap.menu_help_feedback));
+        birdList.add(new Item("Logout",R.mipmap.menu_logout));
+
+        CustomAdapter myAdapter=new CustomAdapter(this,R.layout.main_button,birdList);
+        simpleGrid.setAdapter(myAdapter);
+
+//        simpleGrid = (GridView) findViewById(R.id.gridview); // init GridView
         // Create an object of CustomAdapter and set Adapter to GirdView
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), logos);
-        simpleGrid.setAdapter(customAdapter);
+//        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), logos);
+//        simpleGrid.setAdapter(customAdapter);
         // implement setOnItemClickListener event on GridView
         simpleGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -220,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                             Log.i("position","position==" + position);
                             // Parsing json object response
                             // response will be a json object
-                            if (inside == true) {
+                            if (Objects.equals(position, "Enter")) {
 //                                showNotification();
                                 Log.i("notif","notif");
                                 Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -230,13 +265,13 @@ public class MainActivity extends AppCompatActivity
                                 Notification notification = new Notification.Builder(MainActivity.this)
                                         .setSound(soundUri)
                                         .setContentIntent(pendingIntent)
-                                        .setSmallIcon(R.drawable.menu_alerts)
+                                        .setSmallIcon(R.mipmap.menu_alerts)
                                         .setOnlyAlertOnce(true)
                                         .setColor(getResources().getColor(R.color.colorPrimary))
                                         .setPriority(Notification.PRIORITY_HIGH)
                                         .setContentTitle("Alert!!!")
                                         .setContentText(position+", Bus has reached the School")
-                                        .addAction(R.drawable.menu_alerts, "Open", pendingIntent)
+                                        .addAction(R.mipmap.menu_alerts, "Open", pendingIntent)
                                         .setAutoCancel(true)
                                         .addAction(0, "Remind", pendingIntent).build();
 

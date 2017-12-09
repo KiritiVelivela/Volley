@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/parents_icon"
+            app:srcCompat="@mipmap/parentimage"
             />
 
         <TextView
@@ -75,7 +75,7 @@
         android:id="@+id/track1"
         android:layout_width="157dp"
         android:layout_height="116dp"
-        app:srcCompat="@drawable/menu_track_bus"
+        app:srcCompat="@mipmap/menu_track_bus"
         android:layout_column="0"
         android:layout_row="0"
         android:layout_gravity="fill"
@@ -100,7 +100,7 @@
         android:id="@+id/alerts1"
         android:layout_width="131dp"
         android:layout_height="107dp"
-        app:srcCompat="@drawable/menu_alerts"
+        app:srcCompat="@mipmap/menu_alerts"
         style="@style/mainbutton"
         android:layout_column="1"
         android:layout_row="0"
@@ -125,7 +125,7 @@
         android:layout_height="109dp"
         android:layout_column="0"
         android:layout_row="1"
-        app:srcCompat="@drawable/menu_profiles"
+        app:srcCompat="@mipmap/menu_profiles"
         style="@style/mainbutton"
         android:background="@drawable/mainbutton"/>
 
@@ -144,7 +144,7 @@
         android:id="@+id/share1"
         android:layout_width="135dp"
         android:layout_height="109dp"
-        app:srcCompat="@drawable/menu_shareit"
+        app:srcCompat="@mipmap/menu_shareit"
         style="@style/mainbutton"
         android:background="@drawable/mainbutton"
         android:layout_column="1"
@@ -166,7 +166,7 @@
         android:id="@+id/help1"
         android:layout_width="135dp"
         android:layout_height="109dp"
-        app:srcCompat="@drawable/menu_help_feedback"
+        app:srcCompat="@mipmap/menu_help_feedback"
         style="@style/mainbutton"
         android:background="@drawable/mainbutton"
         android:layout_column="0"
@@ -191,7 +191,7 @@
         android:layout_height="109dp"
         android:layout_column="1"
         android:layout_row="2"
-        app:srcCompat="@drawable/menu_logout"
+        app:srcCompat="@mipmap/menu_logout"
         style="@style/mainbutton"
         android:background="@drawable/mainbutton"/>
 

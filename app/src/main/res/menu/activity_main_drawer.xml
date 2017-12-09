@@ -4,35 +4,35 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_track"
-            android:icon="@drawable/menu_track_bus"
+            android:icon="@mipmap/menu_track_bus"
             android:title="Track My Bus"
             android:checked="false"/>
         <item
             android:id="@+id/nav_alerts"
-            android:icon="@drawable/menu_alerts"
+            android:icon="@mipmap/menu_alerts"
             android:title="Alerts"
             android:checked="false"
             />
         <item
             android:id="@+id/nav_profiles"
-            android:icon="@drawable/menu_profiles"
+            android:icon="@mipmap/menu_profiles"
             android:title="profiles"
             android:checked="false"/>
         <item
             android:id="@+id/nav_share"
-            android:icon="@drawable/menu_shareit"
-            android:title="Shareit"
+            android:icon="@mipmap/menu_shareit"
+            android:title="Share"
             android:checked="false"/>
 
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/menu_help_feedback"
+            android:icon="@mipmap/menu_help_feedback"
             android:title="Help &amp; Feedback"
             android:checked="false"/>
 
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/menu_logout"
+            android:icon="@mipmap/menu_logout"
             android:title="Logout"
             android:checked="false"/>
 

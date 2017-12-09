@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,22 +16,24 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileActivity extends AppCompatActivity {
 
     //Textview to show currently logged in user
-    private TextView textView;
-    private TextView textView1;
-    private TextView textView2;
-    private TextView textView3;
-    private NetworkImageView imageView;
-    private NetworkImageView imageView1;
+    private TextView proname;
+    private TextView promobile;
+    private TextView proemail;
+//    private TextView proalt;
+    private CircleImageView imageView;
+    private CircleImageView imageView1;
     private ImageLoader imageLoader;
 
     @Override
@@ -40,14 +43,16 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Initializing textview
-        textView = (TextView) findViewById(R.id.textView);
-        textView1 = (TextView) findViewById(R.id.textView1);
-        textView2 = (TextView) findViewById(R.id.textView2);
-        textView3 = (TextView) findViewById(R.id.textView3);
-        imageView = (NetworkImageView) findViewById(R.id.thumbnail);
-        imageView1 = (NetworkImageView) findViewById(R.id.thumbnail1);
+        proname = (TextView) findViewById(R.id.parentproname);
+        promobile = (TextView) findViewById(R.id.parentpromobile);
+        proemail = (TextView) findViewById(R.id.parenproemail);
+//        proalt = (TextView) findViewById(R.id.parentproalt);
+        imageView = (CircleImageView) findViewById(R.id.thumbnail);
+        imageView1 = (CircleImageView) findViewById(R.id.thumbnail1);
 
-
+        Typeface customfonts = Typeface.createFromAsset(getAssets(),"fonts/Oxygen-Bold.ttf");
+        proname.setTypeface(customfonts);
+        proemail.setTypeface(customfonts);
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -61,6 +66,8 @@ public class ProfileActivity extends AppCompatActivity {
             JSONArray result = jsonObject.getJSONArray("Result");
             Log.i("jsonarray","jsonarray:" + result);
 //            JSONObject reultin = new JSONObject(String.valueOf(result));
+
+            //IF///////////////////
             if (result.length() == 1) {
             JSONObject parentobject = new JSONObject(result.getString(0));
             Log.i("name","name: " + parentobject);
@@ -80,29 +87,33 @@ public class ProfileActivity extends AppCompatActivity {
             String path = "http://admin.peelabus.com/" + parentobject.getString("imagepath");
             Log.i("name","name: " + path);
 
-                SharedPreferences sharedPreferences1 = ProfileActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences1.edit();
+//                SharedPreferences sharedPreferences1 = ProfileActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences1.edit();
+//
+//                //Adding values to editor
+//                editor.putString(Config.child1name, child1name);
+//                Log.i("nameit", "nameit=" + child1name);
+//                editor.putString(Config.child1class, child1class);
+//                editor.putString(Config.child1section, child1sect);
+//                editor.putString(Config.child1bus, child1bus);
+//                editor.putString(Config.child1pic, path);
+//                //Saving values to editor
+//                editor.apply();
 
-                //Adding values to editor
-                editor.putString(Config.child1name, child1name);
-                Log.i("nameit", "nameit=" + child1name);
-                editor.putString(Config.child1class, child1class);
-                editor.putString(Config.child1section, child1sect);
-                editor.putString(Config.child1bus, child1bus);
-                editor.putString(Config.child1pic, path);
-                //Saving values to editor
-                editor.apply();
+//            imageLoader = ImageRequest.getInstance(this.getApplicationContext())
+//                    .getImageLoader();
+//            imageLoader.get(path, ImageLoader.getImageListener(imageView,
+//                    R.drawable.logo, android.R.drawable
+//                            .ic_dialog_alert));
+//            imageView.setImageUrl(path, imageLoader);
 
-            imageLoader = ImageRequest.getInstance(this.getApplicationContext())
-                    .getImageLoader();
-            imageLoader.get(path, ImageLoader.getImageListener(imageView,
-                    R.drawable.logo, android.R.drawable
-                            .ic_dialog_alert));
-            imageView.setImageUrl(path, imageLoader);
+                Picasso.with(getApplicationContext()).load(path)
+                        .placeholder(R.drawable.splash_bg).error(R.drawable.changepassword_bg)
+                        .into(imageView);
 
-            textView1.setText("Parent Name: " + parentname);
-            textView2.setText("Email: " + parentmail);
-            textView3.setText("Alternate Mobile Number: " + alternatemobile);
+            proname.setText("Parent Name:  " + parentname);
+            proemail.setText("Email-id:  " + parentmail);
+//            proalt.setText("Alternate Mobile Number: " + alternatemobile);
             } else {
                 JSONObject parentobject = new JSONObject(result.getString(0));
                 JSONObject parentobject1 = new JSONObject(result.getString(1));
@@ -127,55 +138,64 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.i("name","name: " + alternatemobile);
 
                 String path = "http://admin.peelabus.com/" + parentobject.getString("imagepath");
-                Log.i("name","name: " + path);
+                Log.i("child1","child1: " + path);
 
                 String path1 = "http://admin.peelabus.com/" + parentobject1.getString("imagepath");
                 Log.i("child2","child2 " + path1);
 
-                SharedPreferences sharedPreferences1 = ProfileActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences1.edit();
+//                SharedPreferences sharedPreferences2 = ProfileActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//                SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+//
+//                //Adding values to editor
+//                editor2.putString(Config.child1name, child1name);
+//                Log.i("nameit", "nameit=" + child1name);
+//                editor2.putString(Config.child1class, child1class);
+//                editor2.putString(Config.child1section, child1sect);
+//                editor2.putString(Config.child1bus, child1bus);
+//
+//                editor2.putString(Config.child2name, child2name);
+//                Log.i("nameit", "nameit=" + child2name);
+//                editor2.putString(Config.child2class, child2class);
+//                editor2.putString(Config.child2section, child2sect);
+//                editor2.putString(Config.child2bus, child2bus);
+//
+//                editor2.putString(Config.child1pic, path);
+//                editor2.putString(Config.child2pic, path1);
+//                //Saving values to editor
+//                editor2.apply();
 
-                //Adding values to editor
-                editor.putString(Config.child1name, child1name);
-                Log.i("nameit", "nameit=" + child1name);
-                editor.putString(Config.child1class, child1class);
-                editor.putString(Config.child1section, child1sect);
-                editor.putString(Config.child1bus, child1bus);
+//                imageLoader = ImageRequest.getInstance(this.getApplicationContext())
+//                        .getImageLoader();
+//                imageLoader.get(path, ImageLoader.getImageListener(imageView,
+//                        R.drawable.logo, android.R.drawable
+//                                .ic_dialog_alert));
+//                imageView.setImageUrl(path, imageLoader);
 
-                editor.putString(Config.child2name, child2name);
-                editor.putString(Config.child2class, child2class);
-                editor.putString(Config.child2section, child2sect);
-                editor.putString(Config.child2bus, child2bus);
+                Picasso.with(getApplicationContext()).load(path)
+                        .placeholder(R.drawable.splash_bg).error(R.drawable.changepassword_bg)
+                        .into(imageView);
 
-                editor.putString(Config.child1pic, path);
-                editor.putString(Config.child2pic, path1);
-                //Saving values to editor
-                editor.apply();
+//                imageLoader = ImageRequest.getInstance(this.getApplicationContext())
+//                        .getImageLoader();
+//                imageLoader.get(path1, ImageLoader.getImageListener(imageView1,
+//                        R.drawable.logo, android.R.drawable
+//                                .ic_dialog_alert));
+//                imageView1.setImageUrl(path1, imageLoader);
 
-                imageLoader = ImageRequest.getInstance(this.getApplicationContext())
-                        .getImageLoader();
-                imageLoader.get(path, ImageLoader.getImageListener(imageView,
-                        R.drawable.logo, android.R.drawable
-                                .ic_dialog_alert));
-                imageView.setImageUrl(path, imageLoader);
+                Picasso.with(getApplicationContext()).load(path1)
+                        .placeholder(R.drawable.splash_bg).error(R.drawable.changepassword_bg)
+                        .into(imageView1);
 
-                imageLoader = ImageRequest.getInstance(this.getApplicationContext())
-                        .getImageLoader();
-                imageLoader.get(path1, ImageLoader.getImageListener(imageView1,
-                        R.drawable.logo, android.R.drawable
-                                .ic_dialog_alert));
-                imageView1.setImageUrl(path1, imageLoader);
-
-                textView1.setText("Parent Name: " + parentname);
-                textView2.setText("Email: " + parentmail);
-                textView3.setText("Alternate Mobile Number: " + alternatemobile);
+                proname.setText("Parent Name:  " + parentname);
+                proemail.setText("Email-id:  " + parentmail);
+//                proalt.setText("Alternate Mobile Number: " + alternatemobile);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //Showing the current logged in email to textview
-        textView.setText("Mobile Number: " + email);
+        promobile.setText("Mobile Number:  " + email);
 
 //        textView1.setText("Current User: " + resp);
     }
@@ -191,18 +211,19 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         //Getting out sharedpreferences
-                        SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                        SharedPreferences preferences3 = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                         //Getting editor
-                        SharedPreferences.Editor editor = preferences.edit();
+                        SharedPreferences.Editor editor3 = preferences3.edit();
 
                         //Puting the value false for loggedin
-                        editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+                        editor3.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
                         //Putting blank value to email
-                        editor.putString(Config.EMAIL_SHARED_PREF, "");
+                        editor3.putString(Config.EMAIL_SHARED_PREF, "");
+
 
                         //Saving the sharedpreferences
-                        editor.commit();
+                        editor3.apply();
 
                         //Starting login activity
                         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);

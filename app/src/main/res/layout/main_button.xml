@@ -12,9 +12,20 @@
         android:scaleType="center"
         android:background="@drawable/mainbutton"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/menu_track_bus"
+        android:src="@mipmap/menu_track_bus"
         android:actionProviderClass=
             "android.widget.ShareActionProvider"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-40dp"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:text="Demo"
+        android:textColor="#000" />
 
 
 </LinearLayout>
