@@ -22,20 +22,20 @@
         android:background="@drawable/loginlayout"
         android:id="@+id/linearLayout5">
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:lines="2"
-            android:maxLines="2"
-            android:text="35\nSpeed"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/textView20"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:lines="2"-->
+            <!--android:maxLines="2"-->
+            <!--android:text="35\nSpeed"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"/>-->
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/rem_dist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -47,7 +47,7 @@
             android:paddingBottom="10dp" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/eta_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

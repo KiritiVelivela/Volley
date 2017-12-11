@@ -54,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,8 @@ import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static net.kiriti.peelabus.DirectionFinder.distance_remaining;
+import static net.kiriti.peelabus.DirectionFinder.eta;
 import static net.kiriti.peelabus.R.id.imageView;
 
 
@@ -71,7 +74,7 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
         OnMapReadyCallback,
-        ResultCallback<Status>, GoogleMap.OnMarkerClickListener {
+        ResultCallback<Status>, GoogleMap.OnMarkerClickListener, DirectionFinderListener {
 
     //    GoogleMap mGoogleMap;
 //    GoogleApiClient mGoogleApiClient;
@@ -85,8 +88,12 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
     private String contactd;
     private CircleImageView profile;
     private TextView driver;
+    private TextView distance_rem;
+    private TextView time_rem;
     private TextView driverdetails;
     private Button callDriver;
+    private String startPoint;
+    private String endPoint;
 
     Geocoder geocoder;
     List<Address> addresses;
@@ -110,8 +117,8 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
             Toast.makeText(this, "Perfect!!!", Toast.LENGTH_LONG).show();
             setContentView(R.layout.activity_track);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            textLat = (TextView) findViewById(R.id.lat);
-//            textLong = (TextView) findViewById(R.id.lon);
+            distance_rem = (TextView) findViewById(R.id.rem_dist);
+            time_rem = (TextView) findViewById(R.id.eta_time);
             profile = (CircleImageView) findViewById(R.id.profile_driver);
             driver = (TextView) findViewById(R.id.Driver);
             driverdetails = (TextView) findViewById(R.id.Driverdetails);
@@ -374,10 +381,13 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
                             goToLocationZoom(latt, lonn, 16);
                             setMarker(locality, latt, lonn);
                             driverDetails();
+                            waypointDetails();
                             jsonResponse = "";
                             jsonResponse += "Name: " + lat + "\n\n";
                             jsonResponse += "Email: " + lon + "\n\n";
                             jsonResponse += "Home: " + speed + "\n\n";
+                            distance_rem.setText(distance_remaining);
+                            time_rem.setText(eta);
                             try {
                                 geoLocate();
                             } catch (IOException e) {
@@ -626,4 +636,127 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 
     }
 
+    private void waypointDetails() {
+        Log.i("inside Waypoints","inside waypoints");
+        //Creating a string request
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.WAYPOINTS_URL,
+
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("waypoints", "waypoints " + response);
+                        //If we are getting success from server
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("jsonObj", "jsonObj:" + jsonObject);
+                        JSONArray result = null;
+                        try {
+                            result = jsonObject.getJSONArray("Result");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.i("jsonarray","jsonarray:" + result);
+                        if (result != null && result.length()>0) {
+                            if (!response.equalsIgnoreCase(Config.LOGIN_SUCCESS)) {
+                                //Creating a shared preference
+                                Log.i("resultWaypoint", "resultWaypoint " + result);
+                                JSONObject obj = null;
+                                try {
+                                    obj = result.getJSONObject(0);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i("jsonarr", "jsonarr=" + obj);
+                                // Parsing json object response
+                                // response will be a json object
+                                try {
+                                    String startpoint = obj.getString("StartWayPoint");
+                                    startPoint = startpoint;
+                                    Log.i("startpt","startpt=="+startpoint);
+//                                    driver.setText("DRIVER NAME: "+drivername);
+                                    String endpoint = obj.getString("EndWayPoint");
+                                    endPoint = endpoint;
+                                    Log.i("end","end== "+endpoint);
+                                    String route = Config.pickuppoint;
+                                    sendRequest();
+//                                    driverdetails.setText("Bus No: "+drivrdet+"\n"+"Route Id: "+route);
+//                                    String img = "http://admin.peelabus.com/"+obj.getString("imagepath");
+//                                    Picasso.with(getApplicationContext()).load(img)
+//                                            .placeholder(R.drawable.splash_bg).error(R.drawable.changepassword_bg)
+//                                            .into(profile);
+//                                    Log.i("driveimage","driverimage=="+img);
+//                                    String contact = obj.getString("mobileno");
+//                                    contactd = contact;
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }else{
+                            //If the server response is not success
+                            //Displaying an error message on toast
+                            Toast.makeText(Track.this, "Unable to retrieve waypoints", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //You can handle error here if you want
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                //Adding parameters to request
+//                params.put("Content-Type", "application/json");
+                String busid2 = "ITS002";
+                params.put(Config.busid2, busid2);
+//                params.put(Config.KEY_PASSWORD, password);
+
+                //returning parameter
+                return params;
+            }
+        };
+
+        //Adding the string request to the queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        Log.i("req", "req" + requestQueue);
+
+    }
+
+    private void sendRequest() {
+        Log.i("inside","inside sendRequest");
+        String origin = startPoint;
+        String destination = endPoint;
+        if (origin.isEmpty()) {
+            Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (destination.isEmpty()) {
+            Toast.makeText(this, "Please enter destination address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            new DirectionFinder(this, origin, destination).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDirectionFinderStart() {
+
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> route) {
+
+    }
 }

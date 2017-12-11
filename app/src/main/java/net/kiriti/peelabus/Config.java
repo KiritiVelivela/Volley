@@ -8,6 +8,9 @@ public class Config {
     public static final String DRIVER_URL = "http://admin.peelabus.com/Webservices/DriverDetailsid.asmx/DriverDetail";
 
     public static final String CHANGE_PASSWORD_URL = "http://admin.peelabus.com/Webservices/ChangePassword.asmx/changepassword";
+
+    public static final String WAYPOINTS_URL = "http://admin.peelabus.com/webservices/Segmentdirection.asmx/WayDirection";
+
     //Keys for email and password as defined in our $_POST['key'] in login.php
     public static final String KEY_EMAIL = "username";
     public static final String KEY_PASSWORD = "password";
@@ -33,6 +36,7 @@ public class Config {
     public static final String LOGGEDIN_SHARED_PREF = "loggedin";
 
     static final String busid = "Busid";
+    static final String busid2 = "Busid";
 
     public static final String pickuppoint = "pickpoint";
 
