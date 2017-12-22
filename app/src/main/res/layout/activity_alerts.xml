@@ -52,7 +52,7 @@
                             android:textAllCaps="true"
                             android:id="@+id/text_header_1"
                             android:textStyle="bold"
-                            android:background="@color/fab_material_blue_500"/>
+                            android:background="#114f94"/>
                     </LinearLayout>
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:id="@+id/pick_up_text_header"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="@color/ColorAccent1"
+                        android:textColor="#000000"
                         android:layout_below="@id/header"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="12dp"
@@ -76,6 +76,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#008080"
                         style="?android:listSeparatorTextViewStyle"
                         android:hint="Location"/>
 
@@ -86,7 +87,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginBottom="4dp"
-                        android:textColor="@color/ColorAccent1"
+                        android:textColor="#000000"
                         android:id="@+id/pick_up_alerts_header"
                         android:textStyle="bold"
                         android:text="Get Alerts Before"/>
@@ -166,7 +167,7 @@
                             android:textAllCaps="true"
                             android:id="@+id/text_header_2"
                             android:textStyle="bold"
-                            android:background="@color/fab_material_blue_500"/>
+                            android:background="#114f94"/>
                     </LinearLayout>
 
                     <TextView
@@ -176,7 +177,7 @@
                         android:id="@+id/drop_point_text_header"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="@color/ColorAccent1"
+                        android:textColor="#000000"
                         android:layout_below="@id/header_2"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="12dp"
@@ -191,6 +192,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginBottom="4dp"
+                        android:textColor="#008080"
                         android:hint="Location"/>
 
                     <TextView
@@ -200,7 +202,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginBottom="4dp"
-                        android:textColor="@color/ColorAccent1"
+                        android:textColor="#000000"
                         android:id="@+id/drop_point_alerts_header"
                         android:textStyle="bold"
                         android:text="Get Alerts Before"/>

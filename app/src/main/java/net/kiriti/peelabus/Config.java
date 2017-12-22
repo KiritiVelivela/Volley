@@ -28,6 +28,7 @@ public class Config {
     //Keys for Sharedpreferences
     //This would be the name of our shared preferences
     public static final String SHARED_PREF_NAME = "myloginapp";
+//    public static final String SHARED_PREF_NAME_ALERTS = "myloginapp";
 
     //This would be used to store the email of current logged in user
     public static final String EMAIL_SHARED_PREF = "email";
@@ -52,4 +53,7 @@ public class Config {
     public static final String child2section = "0th";
     public static final String child2bus = "123";
     public static final String child2pic = "UploadedFiles/jam.jpg";
+
+//    public static final String pickupAlert = "000mins";
+
 }

@@ -101,6 +101,13 @@
             android:parentActivityName=".Settings">
 
         </activity>
+
+        <service android:name=".MyService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"></action>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

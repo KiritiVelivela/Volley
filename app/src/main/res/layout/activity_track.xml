@@ -19,7 +19,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:background="@drawable/loginlayout"
         android:id="@+id/linearLayout5">
 
         <!--<TextView-->
@@ -39,9 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:lines="2"
-            android:maxLines="2"
             android:text="35\nSpeed"
+            android:drawableLeft="@drawable/distance_remaining"
+            android:drawableStart="@drawable/distance_remaining"
             android:gravity="center"
             android:paddingTop="10dp"
             android:paddingBottom="10dp" />
@@ -63,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#414656"
+        android:background="#80000000"
         android:weightSum="1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -124,7 +123,7 @@
             android:id="@+id/call"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#414656"
+            android:background="#807f7f7f"
             android:drawableLeft="@mipmap/call_icon"
             android:gravity="center_vertical"
             android:layout_marginRight="0dp"

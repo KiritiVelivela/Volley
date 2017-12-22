@@ -94,6 +94,7 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
     private Button callDriver;
     private String startPoint;
     private String endPoint;
+    public String currentAddress;
 
     Geocoder geocoder;
     List<Address> addresses;
@@ -304,8 +305,11 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 //        String location = et.getText().toString();
 
         geocoder = new Geocoder(this, Locale.getDefault());
-
+        if (lat == 0.0 && lon == 0.0 ) {
+            Log.i("lat & long are empty","lat & long are empty");
+        } else {
         addresses = geocoder.getFromLocation(lat, lon, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        Log.i("addressesss","addressess==="+lat+lon);
 
         String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
         String city = addresses.get(0).getLocality();
@@ -318,6 +322,12 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
         String postalCode = addresses.get(0).getPostalCode();
         String knownName = addresses.get(0).getFeatureName();
         Log.i("knownname","knownname==="+knownName);
+
+        String addressComplete = address+","+city+","+state+","+country;
+        currentAddress = addressComplete;
+        Log.i("complete","comleteaddr== "+addressComplete);
+
+        }
 
 //        Geocoder gc = new Geocoder(this);
 //        List<Address> list = gc.getFromLocationName(location, 1);
@@ -386,8 +396,8 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
                             jsonResponse += "Name: " + lat + "\n\n";
                             jsonResponse += "Email: " + lon + "\n\n";
                             jsonResponse += "Home: " + speed + "\n\n";
-                            distance_rem.setText(distance_remaining);
-                            time_rem.setText(eta);
+                            distance_rem.setText("DIST: "+distance_remaining);
+                            time_rem.setText("ETA: "+String.valueOf(eta));
                             try {
                                 geoLocate();
                             } catch (IOException e) {
@@ -636,9 +646,10 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 
     }
 
-    private void waypointDetails() {
+    public void waypointDetails() {
         Log.i("inside Waypoints","inside waypoints");
         //Creating a string request
+        AppController.getInstance().getRequestQueue().getCache().clear();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Config.WAYPOINTS_URL,
 
                 new Response.Listener<String>() {
@@ -722,7 +733,6 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
                 return params;
             }
         };
-
         //Adding the string request to the queue
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
@@ -732,9 +742,10 @@ public class Track extends AppCompatActivity implements GoogleApiClient.Connecti
 
     private void sendRequest() {
         Log.i("inside","inside sendRequest");
-        String origin = startPoint;
+        String origin = currentAddress;
+        Log.i("origin","origin==="+origin);
         String destination = endPoint;
-        if (origin.isEmpty()) {
+        if (origin == null) {
             Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
             return;
         }
